@@ -12,7 +12,7 @@ private:
 
 public:
     UnionFind(int pTamanho) {
-        this->tamanho;
+        this->tamanho = pTamanho+1;
         this->conjunto.resize(tamanho);
         for (int i = 0; i < this->conjunto.size(); i++){
             this->conjunto[i] = i;

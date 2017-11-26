@@ -8,6 +8,7 @@ private:
     float peso;
 
 public:
+    Aresta() {}
     Aresta(int pU, int pV, float pPeso) {
         this->u = pU;
         this->v = pV;

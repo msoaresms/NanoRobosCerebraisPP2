@@ -115,6 +115,20 @@ int posNoHeap(Vertice *v, int tam, int n) {
     return -1;
 }
 
+void selectionSort(vector<Aresta> &v) {
+    for (int i = 1; i < v.size(); i++){
+        int min = i;
+        for (int j = i+1; j < v.size(); j++){
+            if (v[j].getPeso() < v[min].getPeso()){
+                min = j;
+            }
+        }
+        Aresta temp = v[i];
+        v[i] = v[min];
+        v[min] = temp;
+    }
+}
+
 template <typename T>
 vector<Vertice> Dijkstra(Grafo<T> grafo, int inicio) {
     Vertice Q[grafo.getOrdem()+1];
@@ -152,6 +166,7 @@ vector<Vertice> Dijkstra(Grafo<T> grafo, int inicio) {
 template <typename T>
 vector<Aresta> Kruskal(Grafo<T> grafo) {
     vector<Aresta> A;
+    vector<Aresta> saida;
     UnionFind conjuntos(grafo.getOrdem());
 
     vector<float> *matriz = grafo.getMatriz();
@@ -164,8 +179,19 @@ vector<Aresta> Kruskal(Grafo<T> grafo) {
         }
     }
 
+    selectionSort(A);
 
+    while (A.size() > 0) {
+        Aresta aux = A[0];
+        A.erase(A.begin()+0);
 
+        if (!conjuntos.conectados(aux.getU(), aux.getV())) {
+            saida.push_back(aux);
+            conjuntos.uniao(aux.getU(), aux.getV());
+        }
+    }
+
+    return saida;
 
 }
 //----------------------------------------------------------------------------------------------------------------------
@@ -212,7 +238,17 @@ int main() {
         }
     }
 
+    float saida = 0.0;
 
+    for (Grafo<bool> x : blocos) {
+        vector<Aresta> resultKruskal = Kruskal(x);
+
+        for (Aresta y : resultKruskal) {
+            saida += y.getPeso();
+        }
+    }
+
+    cout << saida << endl;
 
 
     cout << "\n---------------------------------------------------------";
