@@ -7,19 +7,19 @@ using namespace std;
 
 class UnionFind {
 private:
-    vector<int> conjunto;
+    vector<int> conjuntos;
     int tamanho;
 
 public:
     UnionFind(int pTamanho) {
-        this->tamanho = pTamanho+1;
-        this->conjunto.resize(tamanho);
-        for (int i = 0; i < this->conjunto.size(); i++){
-            this->conjunto[i] = i;
+        this->tamanho = pTamanho;
+        this->conjuntos.resize(tamanho+1);
+        for (int i = 0; i < this->conjuntos.size(); i++){
+            this->conjuntos[i] = i;
         }
     }
 
-    int find(int);
+    int procurar(int);
     bool conectados(int, int);
     void uniao(int, int);
 

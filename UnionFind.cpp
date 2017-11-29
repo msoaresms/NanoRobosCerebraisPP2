@@ -1,20 +1,22 @@
 #include "UnionFind.h"
 
-int UnionFind::find(int p) {
-    while (p != this->conjunto[p]) {
-        p = this->conjunto[p];
+int UnionFind::procurar(int p) {
+    while (p != this->conjuntos[p]) {
+        p = this->conjuntos[p];
     }
     return p;
 }
 
 bool UnionFind::conectados(int p, int q) {
-    return this->find(p) == this->find(q);
+    return (this->procurar(p) == this->procurar(q));
 }
 
 void UnionFind::uniao(int p, int q) {
-    int raizP = this->find(p);
-    int raizQ = this->find(q);
+    int raizP = this->procurar(p);
+    int raizQ = this->procurar(q);
+
     if (raizP == raizQ) { return; }
-    this->conjunto[raizP] = raizQ;
+
+    this->conjuntos[raizP] = raizQ;
     this->tamanho--;
 }
