@@ -8,13 +8,13 @@ using namespace std;
 class UnionFind {
 private:
     vector<int> conjuntos;
-    int tamanho;
+    unsigned int tamanho;
 
 public:
-    UnionFind(int pTamanho) {
+    UnionFind(unsigned int pTamanho) {
         this->tamanho = pTamanho;
         this->conjuntos.resize(tamanho+1);
-        for (int i = 0; i < this->conjuntos.size(); i++){
+        for (unsigned int i = 0; i < this->conjuntos.size(); i++){
             this->conjuntos[i] = i;
         }
     }
