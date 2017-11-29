@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
-#include <cstdlib>
 #include <limits>
 
 #include "Grafo.h"
@@ -249,6 +248,8 @@ int main() {
     }
 
     cout << saida << endl;
+
+    //cerebro.mostrar();
 
 
     cout << "\n---------------------------------------------------------";
