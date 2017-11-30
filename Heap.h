@@ -14,7 +14,7 @@ using namespace std;
 class Heap {
 private:
     int tamanhoHeap, tamArray;
-    int * posParaId, * IdParaPos;
+    int * posParaVert, * vertParaPos;
 
     int esquerda(int i) { return i * 2; }
 
@@ -25,7 +25,7 @@ private:
     void troca(Vertice *, int, int);
 
 public:
-    int getTamanhoHeap() { return this->tamanhoHeap; }
+    int getTamanhoHeap();
 
     void heapfica(Vertice *, int);
 

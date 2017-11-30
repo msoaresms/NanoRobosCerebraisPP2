@@ -1,17 +1,19 @@
 #include "Heap.h"
 
+int Heap::getTamanhoHeap() { return this->tamanhoHeap; }
+
 void Heap::troca(Vertice *v, int i, int j) {
     Vertice vAux = v[i];
     v[i] = v[j];
     v[j] = vAux;
 
-    int aux = this->posParaId[i];
-    this->posParaId[i] = this->posParaId[j];
-    this->posParaId[j] = aux;
+    int aux = this->posParaVert[i];
+    this->posParaVert[i] = this->posParaVert[j];
+    this->posParaVert[j] = aux;
 
-    aux = this->IdParaPos[this->posParaId[i]];
-    this->IdParaPos[this->posParaId[i]] = this->IdParaPos[this->posParaId[j]];
-    this->IdParaPos[this->posParaId[j]] = aux;
+    aux = this->vertParaPos[this->posParaVert[i]];
+    this->vertParaPos[this->posParaVert[i]] = this->vertParaPos[this->posParaVert[j]];
+    this->vertParaPos[this->posParaVert[j]] = aux;
 }
 
 void Heap::heapfica(Vertice *v, int i) {
@@ -36,48 +38,46 @@ void Heap::heapfica(Vertice *v, int i) {
 
 }
 
-void Heap::constroiHeap(Vertice *vec, int pTamArray) {
+void Heap::constroiHeap(Vertice *v, int pTamArray) {
     this->tamArray = pTamArray;
     this->tamanhoHeap = this->tamArray;
 
-    this->IdParaPos = new int[this->tamArray+1];
-    this->posParaId = new int[this->tamArray+1];
+    this->vertParaPos = new int[this->tamArray+1];
+    this->posParaVert = new int[this->tamArray+1];
 
     for (int i = 0; i <= this->tamArray; i++) {
-        this->IdParaPos[i] = i;
-        this->posParaId[i] = i;
+        this->vertParaPos[i] = i;
+        this->posParaVert[i] = i;
     }
 
     for (int i = floor(this->tamArray/2); i > 0; i--) {
-        this->heapfica(vec, i);
+        this->heapfica(v, i);
     }
 }
 
-Vertice Heap::extrairMenor(Vertice *vec) {
+Vertice Heap::extrairMenor(Vertice *v) {
 
-    Vertice menor = vec[1];
-    vec[1] = vec[this->tamanhoHeap];
+    Vertice menor = v[1];
+    v[1] = v[this->tamanhoHeap];
 
-    int id = this->posParaId[this->tamanhoHeap];
-    this->IdParaPos[id] = 1;
-    this->posParaId[1] = id;
+    int vert = this->posParaVert[this->tamanhoHeap];
+    this->vertParaPos[vert] = 1;
+    this->posParaVert[1] = vert;
 
     this->tamanhoHeap--;
 
-    this->heapfica(vec, 1);
+    this->heapfica(v, 1);
 
     return menor;
 }
 
-void Heap::alterarChave(Vertice * vec, int vert, float peso) {
-    vec[vert].setDistancia(peso);
+void Heap::alterarChave(Vertice *v, int vert, float peso) {
+    v[vert].setDistancia(peso);
 
-    while(vert > 1 && vec[pai(vert)].getDistancia() > vec[vert].getDistancia()) {
-        this->troca(vec, vert, pai(vert));
+    while(vert > 1 && v[pai(vert)].getDistancia() > v[vert].getDistancia()) {
+        this->troca(v, vert, pai(vert));
         vert = pai(vert);
     }
 }
 
-int Heap::posNoHeap(int vertice) {
-    return this->IdParaPos[vertice];
-}
+int Heap::posNoHeap(int vertice) { return this->vertParaPos[vertice]; }
