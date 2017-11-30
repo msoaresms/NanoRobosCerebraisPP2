@@ -16,6 +16,47 @@ const bool SAUDAVEL = false;
 const int NULO = -1;
 const int INFINITO = numeric_limits<int>::max();
 //----------------------------------------------------------------------------------------------------------------------
+int particao(vector<Aresta> &v, int p, int r){
+    Aresta x = v[p];
+    Aresta tmp = v[r+1];
+    v[r+1] = x;
+    int i = p;
+    int j = r+1;
+
+    while(true){
+        do{
+            i = i+1;
+        }while((v[i].getPeso() < x.getPeso()) && (i <= r+1));
+        do{
+            j = j-1;
+        }while ((v[j].getPeso() > x.getPeso()) && (j >= p));
+
+        if (i < j){
+            Aresta aux = v[i];
+            v[i] = v[j];
+            v[j] = aux;
+        } else {
+            Aresta aux = v[p];
+            v[p] = v[j];
+            v[j] = aux;
+            v[r+1] = tmp;
+            return j;
+        }
+    }
+}
+
+void quickSort(vector<Aresta> &v, int p, int r) {
+    if (p < r){
+        int q = particao(v, p, r);
+        quickSort(v, p, q-1);
+        quickSort(v, q+1, r);
+    }
+}
+
+void quickSort(vector<Aresta> &v) {
+    quickSort(v, 0, v.size()-1);
+}
+
 vector<string> leitura() {
     string entrada = "";
     char * entradaChar;
@@ -125,29 +166,6 @@ vector<int> adjDeU(vector<float> aux) {
     return adjU;
 }
 
-int posNoHeap(Vertice *v, int tam, int n) {
-    for (int i = 1; i <= tam; i++) {
-        if (n == v[i].getNumVertice()) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-void selectionSort(vector<Aresta> &v) {
-    for (int i = 1; i < v.size(); i++){
-        int min = i;
-        for (int j = i+1; j < v.size(); j++){
-            if (v[j].getPeso() < v[min].getPeso()){
-                min = j;
-            }
-        }
-        Aresta temp = v[i];
-        v[i] = v[min];
-        v[min] = temp;
-    }
-}
-
 template <typename T>
 vector<Vertice> Dijkstra(Grafo<T> grafo, int inicio) {
     Vertice Q[grafo.getOrdem()+1];
@@ -167,15 +185,16 @@ vector<Vertice> Dijkstra(Grafo<T> grafo, int inicio) {
         Vertice u = prioridade.extrairMenor(Q);
         S.push_back(u);
 
-
         adjU = adjDeU(matriz[u.getNumVertice()]);
 
         for (int x : adjU) {
-            int v = posNoHeap(Q, grafo.getOrdem(), x);
-            if (Q[v].getDistancia() > u.getDistancia() + (matriz[u.getNumVertice()][Q[v].getNumVertice()])) {
-                Q[v].setDistancia(u.getDistancia() + (matriz[u.getNumVertice()][Q[v].getNumVertice()]));
-                Q[v].setPredecessor(u.getNumVertice());
-                prioridade.heapfica(Q, 1);
+            int pos = prioridade.posNoHeap(x);
+            if (Q[pos].getDistancia() > u.getDistancia() + (matriz[u.getNumVertice()][Q[pos].getNumVertice()])) {
+
+                float distancia = u.getDistancia() + (matriz[u.getNumVertice()][Q[pos].getNumVertice()]);
+                Q[pos].setPredecessor(u.getNumVertice());
+
+                prioridade.alterarChave(Q, pos, distancia);
             }
         }
     }
@@ -198,7 +217,7 @@ vector<Aresta> Kruskal(Grafo<T> grafo) {
         }
     }
 
-    selectionSort(A);
+    quickSort(A);
 
     while (A.size() > 0) {
         Aresta aux = A[0];
@@ -268,9 +287,6 @@ int main() {
     }
 
     cout << saida << endl;
-
-    //cerebro.mostrar();
-
 
     cout << "\n---------------------------------------------------------";
 
