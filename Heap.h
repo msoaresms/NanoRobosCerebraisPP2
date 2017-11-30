@@ -13,14 +13,16 @@ using namespace std;
 
 class Heap {
 private:
-    int tamanhoHeap;
-    int tamArray;
+    int tamanhoHeap, tamArray;
+    int * posParaId, * IdParaPos;
 
     int esquerda(int i) { return i * 2; }
 
     int direita(int i) { return ((i * 2) + 1); }
 
     int pai(int i) { return floor(i / 2); }
+
+    void troca(Vertice *, int, int);
 
 public:
     int getTamanhoHeap() { return this->tamanhoHeap; }
@@ -30,6 +32,10 @@ public:
     void constroiHeap(Vertice *, int);
 
     Vertice extrairMenor(Vertice *);
+
+    void alterarChave(Vertice *, int, float);
+
+    int posNoHeap(int);
 
 };
 
