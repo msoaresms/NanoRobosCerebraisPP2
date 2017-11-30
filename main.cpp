@@ -67,28 +67,48 @@ void lerBlocos(Grafo<Grafo<bool>> &cerebro) {
         Grafo<bool> bloco(ordemBloco);
 
         entrada = leitura();
-        for (string x : entrada) {
-            doentes.push_back(stoi(x));
-        }
+        if(entrada[0] == "0"){
+            for (int j = 1; j <= tamanhoBloco; j++) {
+                entrada = leitura();
+                int u = stoi(entrada[0]);
+                int v = stoi(entrada[1]);
+                float w = stof(entrada[2]);
 
-        for (int j = 1; j <= tamanhoBloco; j++) {
+                bloco.inserirAresta(u, v, w);
+            }
+        }
+        else{
             entrada = leitura();
-            int u = stoi(entrada[0]);
-            int v = stoi(entrada[1]);
-            float w = stof(entrada[2]);
+            for (string x : entrada) {
+                doentes.push_back(stoi(x));
+            }
+            for (int j = 1; j <= tamanhoBloco; j++) {
+                entrada = leitura();
+                int u = stoi(entrada[0]);
+                int v = stoi(entrada[1]);
+                float w = stof(entrada[2]);
 
-            bloco.inserirAresta(u, v, w);
+                bloco.inserirAresta(u, v, w);
+            }
         }
 
-        int k = 0;
-        for (int j = 1; j <= ordemBloco; j++) {
-            if (j == doentes[k] && k < doentes.size()) {
-                bloco.inserirItem(DOENTE, j);
-            } else {
+        if (doentes.size()== 0){
+            for (int j = 1; j <= ordemBloco; j++){
                 bloco.inserirItem(SAUDAVEL, j);
             }
-            k++;
         }
+        else{
+            int k = 0;
+            for (int j = 1; j <= ordemBloco; j++) {
+                if (j == doentes[k] && k < doentes.size()) {
+                    bloco.inserirItem(DOENTE, j);
+                } else {
+                    bloco.inserirItem(SAUDAVEL, j);
+                }
+                k++;
+            }
+        }
+
 
         cerebro.inserirItem(bloco, i);
 
